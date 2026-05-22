@@ -1,4 +1,4 @@
-# 🧠 NeuroGuard — Stroke Risk AI
+#  NeuroGuard — Stroke Risk AI
 
 An advanced, multi-model clinical AI application for stroke risk assessment. Built with **Streamlit + scikit-learn + XGBoost + SHAP**, featuring a premium dark UI, interactive Plotly charts, and full model explainability.
 
@@ -11,7 +11,7 @@ An advanced, multi-model clinical AI application for stroke risk assessment. Bui
 
 ---
 
-## 📌 Overview
+##  Overview
 
 This project treats stroke prediction as a **probabilistic classification problem**:
 
@@ -21,7 +21,7 @@ Rather than a simple Yes/No output, the app estimates a continuous stroke probab
 
 ---
 
-## 🤖 Models Implemented
+##  Models Implemented
 
 | Model | Type | Key Strength |
 |---|---|---|
@@ -35,7 +35,7 @@ Rather than a simple Yes/No output, the app estimates a continuous stroke probab
 
 ---
 
-## 🧠 Methodology
+##  Methodology
 
 | Technique | Details |
 |---|---|
@@ -46,36 +46,36 @@ Rather than a simple Yes/No output, the app estimates a continuous stroke probab
 | **Explainability** | SHAP TreeExplainer (per-prediction feature attribution) |
 | **Train/Test Split** | 75% / 25%, stratified |
 
-> ⚠️ **Why not just Accuracy?**  
+>  **Why not just Accuracy?**  
 > With ~4.9% positive rate, a naive "always No Stroke" model hits 95% accuracy but is clinically worthless.  
 > We prioritize **Recall** (catching true stroke cases) and **AUC-ROC** (discrimination ability).
 
 ---
 
-## 📊 Application Features
+##  Application Features
 
-### Tab 1 — 🔍 Prediction
+### Tab 1 —  Prediction
 - **Risk Score** with color-coded gauge (Low / Moderate / High)
 - **Donut chart** showing probability split
 - **Feature Importance** bar chart for tree-based models
 - **SHAP values** — explains *why* the model made that prediction
 - **Clinical Advisory Report** — personalized per risk factor (Glucose, BMI, Hypertension, etc.)
 
-### Tab 2 — 📊 Model Analytics
+### Tab 2 —  Model Analytics
 - **Radar chart** comparing all 7 models across 5 metrics
 - **Leaderboard table** with color gradient highlighting
 - **ROC Curves** for all models on the same chart
 - **Confusion Matrices** for every model
 - **Cross-Validation F1 bar chart** with error bars
 
-### Tab 3 — 🗂️ Dataset EDA
+### Tab 3 —  Dataset EDA
 - Class distribution donut
 - Age & Glucose distributions by stroke status
 - Stroke rate by work type
 - Feature correlation heatmap
 - BMI vs Glucose scatter plot
 
-### Tab 4 — 📖 Methodology
+### Tab 4 —  Methodology
 - Dataset details, preprocessing steps
 - Per-model descriptions with rationale
 - Evaluation strategy explanation
@@ -83,7 +83,7 @@ Rather than a simple Yes/No output, the app estimates a continuous stroke probab
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 
 ```
 stroke-diagnose/
@@ -95,7 +95,7 @@ stroke-diagnose/
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### 1. Clone the repository
 
@@ -136,7 +136,7 @@ streamlit run app_stroke.py
 
 ---
 
-## 📦 Dependencies
+##  Dependencies
 
 ```
 streamlit
@@ -152,7 +152,7 @@ shap
 
 ---
 
-## 📋 Input Features
+##  Input Features
 
 | Feature | Type | Description |
 |---|---|---|
@@ -169,12 +169,12 @@ shap
 
 ---
 
-## ⚠️ Disclaimer
+##  Disclaimer
 
 For **educational and portfolio purposes only**. Not a substitute for professional medical advice. Always consult a qualified healthcare provider for medical decisions.
 
 ---
 
-## 👤 Author
+##  Author
 Nguyễn Hồng Đăng
-Made with ❤️ as a Data Science portfolio project demonstrating end-to-end ML model selection, evaluation, and deployment skills.
+Made with  as a Data Science portfolio project demonstrating end-to-end ML model selection, evaluation, and deployment skills.
