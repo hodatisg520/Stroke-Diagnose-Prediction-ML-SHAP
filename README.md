@@ -176,5 +176,5 @@ For **educational and portfolio purposes only**. Not a substitute for profession
 ---
 
 ## 👤 Author
-
+Nguyễn Hồng Đăng
 Made with ❤️ as a Data Science portfolio project demonstrating end-to-end ML model selection, evaluation, and deployment skills.
