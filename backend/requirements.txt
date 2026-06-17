@@ -1,7 +1,8 @@
-fastapi
-uvicorn
-scikit-learn
-pandas
-imbalanced-learn
-pydantic
-shap
+fastapi==0.115.0
+uvicorn==0.30.6
+scikit-learn==1.5.2
+pandas==2.2.3
+imbalanced-learn==0.14.0
+pydantic>=2.0.0
+shap==0.51.0
+numpy>=1.26.0
