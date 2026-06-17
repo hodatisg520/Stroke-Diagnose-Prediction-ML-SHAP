@@ -102,6 +102,15 @@ function App() {
         </p>
       </header>
 
+      {models.length === 0 && !error && (
+        <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1e3a8a', padding: '1rem 1.5rem', borderRadius: '12px', marginBottom: '2rem', display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <Info color="#2563eb" size={24} style={{ flexShrink: 0 }} />
+          <div style={{ fontSize: '0.95rem', lineHeight: 1.5 }}>
+            <strong>System Initializing:</strong> The AI backend is hosted on a free cloud service and may take 30-50 seconds to wake up from sleep mode. If the "Run Diagnostic" button is disabled, please wait a moment and <strong>refresh the page</strong>.
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="error-banner">
           <Info color="#b91c1c" />
