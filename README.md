@@ -1,180 +1,79 @@
-#  NeuroGuard — Stroke Risk AI
+# Stroke Risk Diagnostic & Prediction Platform
 
-An advanced, multi-model clinical AI application for stroke risk assessment. Built with **Streamlit + scikit-learn + XGBoost + SHAP**, featuring a premium dark UI, interactive Plotly charts, and full model explainability.
+A comprehensive Machine Learning system for predicting stroke probability based on clinical and demographic data. This project implements a robust machine learning pipeline, an Explainable AI (XAI) backend, and a modern frontend interface designed for clinical decision support.
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.x-red?logo=streamlit)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikit-learn)
-![XGBoost](https://img.shields.io/badge/XGBoost-Boosting-green?logo=xgboost)
-![Plotly](https://img.shields.io/badge/Plotly-Interactive-cyan?logo=plotly)
-![License](https://img.shields.io/badge/License-MIT-purple)
+## Live Application
+The platform is currently deployed and accessible at: 
+**[https://stroke-diagnose-prediction-ml-shap.vercel.app](https://stroke-diagnose-prediction-ml-shap.vercel.app)**
 
 ---
 
-##  Overview
+## System Architecture
 
-This project treats stroke prediction as a **probabilistic classification problem**:
+The project has been refactored from a monolithic application into a decoupled, modern architecture:
 
-> **P(Stroke | Age, BMI, Hypertension, Glucose, Heart Disease, ...)**
+1. **Machine Learning Pipeline (Jupyter Notebook):** Handles rigorous Exploratory Data Analysis (EDA), feature engineering, and model training.
+2. **FastAPI Backend:** Serves the serialized machine learning models and computes SHAP (SHapley Additive exPlanations) values dynamically.
+3. **React Frontend:** A highly responsive, modern "Light Mode" user interface designed with Neumorphism and minimalist aesthetics to display risk probabilities and feature impacts.
 
-Rather than a simple Yes/No output, the app estimates a continuous stroke probability using **7 different ML models** and presents it alongside clinical-grade analysis, feature explanations, and personalized health advice.
+## Key Features
 
----
+- **Robust Data Pipeline:** Implements strict Data Leakage prevention by performing Train/Test Splits prior to applying SMOTE (Synthetic Minority Over-sampling Technique) using `imblearn.pipeline.Pipeline`.
+- **Ensemble Modeling:** Utilizes multiple classifiers (Random Forest, Gradient Boosting, SVM, Logistic Regression, HistGradientBoosting) culminating in a Soft-Voting Ensemble model for high-accuracy predictions.
+- **Explainable AI (SHAP):** Integrates SHAP `KernelExplainer` to calculate the exact impact of each physiological feature (e.g., Glucose level, BMI, Age) on the final stroke probability, ensuring high clinical transparency.
+- **Enterprise-Grade UI:** A clean, modern, and accessible user interface built with React and custom CSS, featuring soft drop-shadows, responsive grid layouts, and dynamic horizontal bar charts for SHAP explanations.
 
-##  Models Implemented
+## Technology Stack
 
-| Model | Type | Key Strength |
-|---|---|---|
-| **Random Forest** | Ensemble (Bagging) | Robust, interpretable, feature importances |
-| **Logistic Regression** | Linear | Interpretable baseline with L2 regularization |
-| **Gradient Boosting** | Ensemble (Boosting) | Sequential error correction |
-| **XGBoost** | Optimized Boosting | State-of-the-art tabular performance |
-| **SVM** | Kernel Method | Strong in high-dimensional spaces |
-| **KNN** | Instance-based | Non-parametric, distance-weighted |
-| **Voting Ensemble** | Meta-learner | Soft voting over all models, reduces variance |
-
----
-
-##  Methodology
-
-| Technique | Details |
-|---|---|
-| **Imbalance Handling** | SMOTE (Synthetic Minority Over-sampling Technique) |
-| **Scaling** | `StandardScaler` inside `sklearn.Pipeline` for SVM/LR/KNN |
-| **Evaluation** | 5-Fold Stratified Cross-Validation |
-| **Metrics** | Accuracy, Precision, Recall, F1-Score, AUC-ROC |
-| **Explainability** | SHAP TreeExplainer (per-prediction feature attribution) |
-| **Train/Test Split** | 75% / 25%, stratified |
-
->  **Why not just Accuracy?**  
-> With ~4.9% positive rate, a naive "always No Stroke" model hits 95% accuracy but is clinically worthless.  
-> We prioritize **Recall** (catching true stroke cases) and **AUC-ROC** (discrimination ability).
+- **Machine Learning & Data Processing:** Python 3, Scikit-Learn, Pandas, Numpy, Imbalanced-Learn, SHAP
+- **Backend API:** FastAPI, Uvicorn, Pydantic
+- **Frontend Framework:** React, Vite, Axios, Lucide-React
+- **Deployment:** Render (Backend), Vercel (Frontend)
 
 ---
 
-##  Application Features
+## Local Installation and Setup
 
-### Tab 1 —  Prediction
-- **Risk Score** with color-coded gauge (Low / Moderate / High)
-- **Donut chart** showing probability split
-- **Feature Importance** bar chart for tree-based models
-- **SHAP values** — explains *why* the model made that prediction
-- **Clinical Advisory Report** — personalized per risk factor (Glucose, BMI, Hypertension, etc.)
+If you wish to run this project locally, follow the instructions below.
 
-### Tab 2 —  Model Analytics
-- **Radar chart** comparing all 7 models across 5 metrics
-- **Leaderboard table** with color gradient highlighting
-- **ROC Curves** for all models on the same chart
-- **Confusion Matrices** for every model
-- **Cross-Validation F1 bar chart** with error bars
+### Prerequisites
+- Python 3.9+
+- Node.js 18+
+- npm or yarn
 
-### Tab 3 —  Dataset EDA
-- Class distribution donut
-- Age & Glucose distributions by stroke status
-- Stroke rate by work type
-- Feature correlation heatmap
-- BMI vs Glucose scatter plot
-
-### Tab 4 —  Methodology
-- Dataset details, preprocessing steps
-- Per-model descriptions with rationale
-- Evaluation strategy explanation
-- Full tech stack
-
----
-
-##  Project Structure
-
-```
-stroke-diagnose/
-├── app_stroke.py                         # Main Streamlit application
-├── healthcare-dataset-stroke-data.csv    # Dataset (place here)
-├── requirements.txt                      # Dependencies
-└── README.md
+### 1. Clone the Repository
+```bash
+git clone https://github.com/hodatisg520/Stroke-Diagnose-Prediction-ML-SHAP.git
+cd Stroke-Diagnose-Prediction-ML-SHAP
 ```
 
----
-
-##  Setup & Installation
-
-### 1. Clone the repository
+### 2. Setup the Backend
+Navigate to the backend directory, install the required Python packages, and start the FastAPI server.
 
 ```bash
-git clone https://github.com/<your-username>/stroke-diagnose.git
-cd stroke-diagnose
-```
-
-### 2. Create a virtual environment
-
-```bash
-python -m venv venv
-source venv/bin/activate        # macOS/Linux
-venv\Scripts\activate           # Windows
-```
-
-### 3. Install dependencies
-
-```bash
+cd backend
 pip install -r requirements.txt
+uvicorn main:app --reload
 ```
+The backend API will run on `http://127.0.0.1:8000`.
 
-### 4. Add the dataset
-
-Download from Kaggle and place in root:
-
-```
-healthcare-dataset-stroke-data.csv
-```
-
-> Source: https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
-
-### 5. Run the app
+### 3. Setup the Frontend
+Open a new terminal window, navigate to the frontend directory, install dependencies, and start the development server.
 
 ```bash
-streamlit run app_stroke.py
+cd frontend-react
+npm install
+npm run dev
 ```
+The frontend will be accessible at `http://localhost:5173`.
+
+### 4. Machine Learning Training (Optional)
+To retrain the models or view the data analysis:
+- Open `model_training.ipynb` using Jupyter Notebook or VSCode.
+- Run all cells to process the `healthcare-dataset-stroke-data.csv` dataset.
+- New `.pkl` model files will be automatically exported to the `backend/` directory.
 
 ---
 
-##  Dependencies
-
-```
-streamlit
-pandas
-numpy
-matplotlib
-scikit-learn
-imbalanced-learn
-xgboost
-plotly
-shap
-```
-
----
-
-##  Input Features
-
-| Feature | Type | Description |
-|---|---|---|
-| Gender | Categorical | Male / Female |
-| Age | Numeric | 0–100 years |
-| Hypertension | Binary | Yes / No |
-| Heart Disease | Binary | Yes / No |
-| Ever Married | Binary | Yes / No |
-| Work Type | Categorical | Private / Self-employed / Govt / Children / Never worked |
-| Residence Type | Categorical | Urban / Rural |
-| Avg Glucose Level | Numeric | mg/dL |
-| BMI | Numeric | kg/m² |
-| Smoking Status | Categorical | Never / Formerly / Active / Unknown |
-
----
-
-##  Disclaimer
-
-For **educational and portfolio purposes only**. Not a substitute for professional medical advice. Always consult a qualified healthcare provider for medical decisions.
-
----
-
-##  Author
-Nguyễn Hồng Đăng
-Made with  as a Data Science portfolio project demonstrating end-to-end ML model selection, evaluation, and deployment skills.
+## Disclaimer
+This application is designed for educational and research purposes only. It is not intended to substitute professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition.
