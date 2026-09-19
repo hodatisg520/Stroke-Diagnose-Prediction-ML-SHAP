@@ -323,5 +323,5 @@ def generate_ai_advice(data: AIDoctorRequest) -> Dict[str, Any]:
         if "not configured" in str(exc):
             notice = "Gemini is not configured, so this panel is using local demo guidance."
         else:
-            notice = "Gemini was unavailable, so this panel is using local demo guidance."
+            notice = f"Gemini request failed ({str(exc)}); the panel is using local demo guidance."
         return _build_demo_advice(data, notice)
