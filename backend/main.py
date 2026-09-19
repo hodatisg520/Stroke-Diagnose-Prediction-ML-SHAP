@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -29,7 +30,7 @@ try:
     with open(os.path.join(BASE_DIR, "stroke_metadata.pkl"), "rb") as f:
         meta = pickle.load(f)
         feature_cols = meta['feature_cols']
-        
+
     with open(os.path.join(BASE_DIR, "stroke_models.pkl"), "rb") as f:
         models = pickle.load(f)
 except Exception as e:
@@ -72,9 +73,9 @@ def ai_doctor(data: AIDoctorRequest):
 def predict(data: PatientData):
     if data.model_name not in models:
         raise HTTPException(status_code=400, detail="Model not found")
-        
+
     model = models[data.model_name]
-    
+
     inp_df = pd.DataFrame([{
         'gender': 1 if data.gender == "Female" else 0,
         'age': data.age,
@@ -87,13 +88,13 @@ def predict(data: PatientData):
         'Residence_type': data.Residence_type,
         'smoking_status': data.smoking_status
     }])
-    
+
     inp_dum = pd.get_dummies(inp_df, columns=['work_type', 'Residence_type', 'smoking_status'])
     inp_fin = inp_dum.reindex(columns=feature_cols, fill_value=0)
-    
+
     try:
         prob = model.predict_proba(inp_fin)[0][1]
-        
+
         if prob < 0.30:
             category = "Low Risk"
         elif prob < 0.60:
@@ -106,10 +107,10 @@ def predict(data: PatientData):
             # Ensure it is a DataFrame to avoid feature name mismatch warnings
             df_temp = pd.DataFrame(X_val, columns=feature_cols)
             return model.predict_proba(df_temp)
-            
+
         explainer = shap.KernelExplainer(predict_proba_wrapper, background_data)
         shap_values = explainer.shap_values(inp_fin)
-        
+
         # KernelExplainer returns a list of arrays for multi-class, index 1 is positive class
         if isinstance(shap_values, list):
             sv = shap_values[1][0]
@@ -127,15 +128,15 @@ def predict(data: PatientData):
             base_col = col
             if '_' in col and col.split('_')[0] in ['work', 'Residence', 'smoking']:
                 base_col = col.rsplit('_', 1)[0]
-                
+
             impact = float(sv[i])
             # Only add if impact is significant
             if abs(impact) > 0.001:
                 feature_impact.append({"feature": base_col, "impact": impact})
-                
+
         # Sort by absolute impact descending
         feature_impact.sort(key=lambda x: abs(x['impact']), reverse=True)
-            
+
         return {
             "model_used": data.model_name,
             "stroke_probability": float(prob),
@@ -146,4 +147,3 @@ def predict(data: PatientData):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-
