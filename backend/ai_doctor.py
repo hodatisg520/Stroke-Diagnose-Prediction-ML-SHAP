@@ -291,8 +291,8 @@ def _call_gemini(data: AIDoctorRequest) -> Dict[str, Any]:
         with urllib.request.urlopen(request, timeout=25) as response:
             response_body = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
-        # Do not expose the response body or API key to the browser.
-        raise RuntimeError(f"Gemini request failed with HTTP {exc.code}.") from exc
+        # Read Google's error response without exposing the API key.         try:             error_payload = json.loads(exc.read().decode("utf-8"))             error_message = str(error_payload.get("error", {}).get("message", "")).strip()         except (json.JSONDecodeError, UnicodeDecodeError, AttributeError):             error_message = ""         safe_detail = f" {error_message[:180]}" if error_message else ""
+        error_body = exc.read().decode("utf-8", "replace"); raise RuntimeError(f"Gemini request failed with HTTP {exc.code}. {error_body[:180]}") from exc
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
         raise RuntimeError("Gemini could not be reached right now.") from exc
 
