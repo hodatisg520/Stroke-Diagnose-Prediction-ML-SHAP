@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field
 
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash").strip()
 
 
 class AIDoctorRequest(BaseModel):
@@ -274,7 +274,7 @@ def _call_gemini(data: AIDoctorRequest) -> Dict[str, Any]:
         "generationConfig": {
             "temperature": 0.2,
             "maxOutputTokens": 900,
-            "responseMimeType": "application/json",
+            "responseFormat": {                 "text": {                     "mimeType": "application/json",                     "schema": {                         "type": "object",                         "properties": {                             "summary": {"type": "string"},                             "risk_signals": {                                 "type": "array",                                 "items": {                                     "type": "object",                                     "properties": {                                         "title": {"type": "string"},                                         "severity": {"type": "string", "enum": ["info", "watch", "urgent"]},                                         "message": {"type": "string"}                                     },                                     "required": ["title", "severity", "message"]                                 }                             },                             "recommendations": {                                 "type": "array",                                 "items": {                                     "type": "object",                                     "properties": {                                         "title": {"type": "string"},                                         "action": {"type": "string"},                                         "why": {"type": "string"}                                     },                                     "required": ["title", "action", "why"]                                 }                             },                             "next_steps": {"type": "array", "items": {"type": "string"}},                             "disclaimer": {"type": "string"}                         },                         "required": ["summary", "risk_signals", "recommendations", "next_steps", "disclaimer"]                     }                 }             },
         },
     }
     request = urllib.request.Request(
